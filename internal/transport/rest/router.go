@@ -2,6 +2,7 @@ package rest
 
 import (
 	"github.com/Benzogang-Tape/Reddit-clone/internal/transport/middleware"
+	mdwr "github.com/Benzogang-Tape/Reddit-clone/pkg/middleware"
 	"github.com/gorilla/mux"
 	"go.uber.org/zap"
 	"html/template"
@@ -60,7 +61,7 @@ func (rtr *AppRouter) InitRouter(logger *zap.SugaredLogger) http.Handler {
 	r.HandleFunc("/api/post/{POST_ID:[0-9a-fA-F-]+}/{COMMENT_ID:[0-9a-fA-F-]+$}", rtr.postHandler.DeleteComment).Methods(http.MethodDelete)
 
 	router := middleware.Auth(r, logger)
-	router = middleware.AccessLog(logger, router)
+	router = mdwr.AccessLog(logger, router)
 	router = middleware.Panic(router, logger)
 
 	return router
